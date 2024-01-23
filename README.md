@@ -2,7 +2,13 @@ This is a [Next.js](https://nextjs.org/) project
 
 ## Getting Started
 
-First, run the development server:
+First, add the desired URL to fetch the collections in your .env.local file
+
+```bash
+URL_COLLECTIONS="https://..."
+```
+
+Second, run the development server:
 
 ```bash
 npm run dev
