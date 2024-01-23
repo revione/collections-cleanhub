@@ -27,7 +27,6 @@ export default function Collection({
     stage,
     category,
     collectionAndSortingParagraph,
-    portfolioAssignedQuantityPercentage,
     slug,
     totalRecoveredQuantity,
     unassignedQuantityTotal,
