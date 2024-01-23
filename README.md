@@ -15,3 +15,8 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Deploys
+
+Deploy develop in [https://collections-cleanhub.dev.rev.earth](https://collections-cleanhub.dev.rev.earth)
+Deploy main in [https://collections-cleanhub.dev.earth](https://collections-cleanhub.dev.earth)
