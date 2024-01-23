@@ -1,10 +1,11 @@
 "use client";
-import { useMemo, useState } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import { CollectionData, Stage, State } from "@/app/types";
 
 import Collection from "./Collection";
 import Selects from "./filters/Selects";
 import BooleanFilter from "./filters/BooleanFilter";
+import SearchFilters from "./filters/SerchFilter";
 
 import { Box, Container, Grid } from "@mui/material";
 
@@ -20,7 +21,15 @@ export default function Collections({
 
   const [parentHubNamePortfolio, setParentHubNamePortfolio] = useState(true);
 
+  const [searchText, setSearchText] = useState("");
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchText(event.target.value);
+  };
+
   const filteredCollections = useMemo(() => {
+    const lowerSearchText = searchText.toLowerCase();
+
     return collections.filter((collection) => {
       const stateMatches =
         selects.state === "all" || collection.state === selects.state;
@@ -29,10 +38,17 @@ export default function Collections({
       const portfolioMatches = parentHubNamePortfolio
         ? collection.parentHubName === "Portfolio"
         : collection.parentHubName !== "Portfolio";
+      const stringMatches =
+        (searchText.length > 0 &&
+          collection.name.toLowerCase().includes(lowerSearchText)) ||
+        collection.collectionAndSortingParagraph
+          ?.toLowerCase()
+          .includes(lowerSearchText) ||
+        collection.cardDescription?.toLowerCase().includes(lowerSearchText);
 
-      return stateMatches && stageMatches && portfolioMatches;
+      return stateMatches && stageMatches && portfolioMatches && stringMatches;
     });
-  }, [collections, parentHubNamePortfolio, selects]);
+  }, [collections, parentHubNamePortfolio, selects, searchText]);
 
   return (
     <Container sx={{ marginY: "1rem" }}>
@@ -41,6 +57,7 @@ export default function Collections({
         <BooleanFilter
           {...{ parentHubNamePortfolio, setParentHubNamePortfolio }}
         />
+        <SearchFilters {...{ searchText, handleSearchChange }} />
       </Box>
       <Box>
         <Grid container spacing={2}>
