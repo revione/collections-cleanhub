@@ -4,6 +4,7 @@ import { CollectionData, Stage, State } from "@/app/types";
 
 import Collection from "./Collection";
 import Selects from "./filters/Selects";
+import BooleanFilter from "./filters/BooleanFilter";
 
 import { Box, Container, Grid } from "@mui/material";
 
@@ -17,21 +18,29 @@ export default function Collections({
     stage: "all" as Stage | "all",
   });
 
+  const [parentHubNamePortfolio, setParentHubNamePortfolio] = useState(true);
+
   const filteredCollections = useMemo(() => {
     return collections.filter((collection) => {
       const stateMatches =
         selects.state === "all" || collection.state === selects.state;
       const stageMatches =
         selects.stage === "all" || collection.stage === selects.stage;
+      const portfolioMatches = parentHubNamePortfolio
+        ? collection.parentHubName === "Portfolio"
+        : collection.parentHubName !== "Portfolio";
 
-      return stateMatches && stageMatches;
+      return stateMatches && stageMatches && portfolioMatches;
     });
-  }, [collections, selects]);
+  }, [collections, parentHubNamePortfolio, selects]);
 
   return (
     <Container sx={{ marginY: "1rem" }}>
       <Box sx={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
         <Selects {...{ selects, setSelects }} />
+        <BooleanFilter
+          {...{ parentHubNamePortfolio, setParentHubNamePortfolio }}
+        />
       </Box>
       <Box>
         <Grid container spacing={2}>
