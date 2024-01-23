@@ -52,7 +52,14 @@ export default function Collections({
 
   return (
     <Container sx={{ marginY: "1rem" }}>
-      <Box sx={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          gap: "1rem",
+          marginBottom: "1rem",
+        }}
+      >
         <Selects {...{ selects, setSelects }} />
         <BooleanFilter
           {...{ parentHubNamePortfolio, setParentHubNamePortfolio }}
