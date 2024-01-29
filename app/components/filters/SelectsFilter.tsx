@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { State, Stage } from "@/app/types";
 
-const Selects = ({
+const SelectsFilter = ({
   selects,
   setSelects,
 }: {
@@ -89,4 +89,4 @@ const Selects = ({
   );
 };
 
-export default Selects;
+export default SelectsFilter;

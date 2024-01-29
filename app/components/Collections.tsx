@@ -3,7 +3,7 @@ import { ChangeEvent, useMemo, useState } from "react";
 import { CollectionData, Stage, State } from "@/app/types";
 
 import Collection from "./Collection";
-import Selects from "./filters/Selects";
+import SelectsFilter from "./filters/SelectsFilter";
 import BooleanFilter from "./filters/BooleanFilter";
 import SearchFilters from "./filters/SerchFilter";
 
@@ -60,7 +60,7 @@ export default function Collections({
           marginBottom: "1rem",
         }}
       >
-        <Selects {...{ selects, setSelects }} />
+        <SelectsFilter {...{ selects, setSelects }} />
         <BooleanFilter
           {...{ parentHubNamePortfolio, setParentHubNamePortfolio }}
         />
