@@ -13,17 +13,15 @@ export default function BooleanFilter({
   };
 
   return (
-    <Box>
-      <FormControlLabel
-        control={
-          <Switch
-            checked={parentHubNamePortfolio}
-            onChange={handleToggleChange}
-            color="primary"
-          />
-        }
-        label="Parent Hub Name Portfolio"
-      />
-    </Box>
+    <FormControlLabel
+      control={
+        <Switch
+          checked={parentHubNamePortfolio}
+          onChange={handleToggleChange}
+          color="primary"
+        />
+      }
+      label="Parent Hub Name Portfolio"
+    />
   );
 }
