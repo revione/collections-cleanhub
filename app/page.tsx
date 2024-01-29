@@ -22,7 +22,7 @@ export default async function Home() {
     const collections = await collectionsPromise;
     return (
       <Box>
-        <Collections {...{ collections }} />
+        <Collections collections={collections} />
       </Box>
     );
   } catch (error) {
