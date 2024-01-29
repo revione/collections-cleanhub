@@ -60,11 +60,15 @@ export default function Collections({
           marginBottom: "1rem",
         }}
       >
-        <SelectsFilter {...{ selects, setSelects }} />
+        <SelectsFilter selects={selects} setSelects={setSelects} />
         <BooleanFilter
-          {...{ parentHubNamePortfolio, setParentHubNamePortfolio }}
+          parentHubNamePortfolio={parentHubNamePortfolio}
+          setParentHubNamePortfolio={setParentHubNamePortfolio}
         />
-        <SearchFilters {...{ searchText, handleSearchChange }} />
+        <SearchFilters
+          searchText={searchText}
+          handleSearchChange={handleSearchChange}
+        />
       </Box>
       <Box>
         <Grid container spacing={2}>
