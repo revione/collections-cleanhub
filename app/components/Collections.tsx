@@ -70,7 +70,7 @@ export default function Collections({
         <Grid container spacing={2}>
           {filteredCollections.map((collection) => (
             <Grid item key={collection.uuid} xs={12} sm={6} md={6} lg={4}>
-              <Collection CollectionData={collection} />
+              <Collection collectionData={collection} />
             </Grid>
           ))}
         </Grid>
