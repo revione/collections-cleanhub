@@ -13,9 +13,9 @@ import {
 import { CollectionData } from "../types";
 
 export default function Collection({
-  CollectionData,
+  collectionData,
 }: {
-  CollectionData: CollectionData;
+  collectionData: CollectionData;
 }) {
   const {
     logo,
@@ -33,7 +33,7 @@ export default function Collection({
     cardDescription,
     cardImage,
     unassignedQuantityPercentage,
-  } = CollectionData;
+  } = collectionData;
 
   return (
     <Card style={{ height: "100%" }}>

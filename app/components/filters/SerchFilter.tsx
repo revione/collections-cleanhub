@@ -8,12 +8,10 @@ export default function SearchFilters({
   handleSearchChange: (event: any) => void;
 }) {
   return (
-    <div>
-      <TextField
-        label="Search character"
-        value={searchText}
-        onChange={handleSearchChange}
-      />
-    </div>
+    <TextField
+      label="Search a collection"
+      value={searchText}
+      onChange={handleSearchChange}
+    />
   );
 }
