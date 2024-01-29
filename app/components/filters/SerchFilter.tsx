@@ -10,7 +10,7 @@ export default function SearchFilters({
   return (
     <div>
       <TextField
-        label="Search character"
+        label="Search a collection"
         value={searchText}
         onChange={handleSearchChange}
       />
