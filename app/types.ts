@@ -67,3 +67,9 @@ export enum Stage {
   FULLY_ONBOARDED = "FULLY_ONBOARDED",
   PILOT = "PILOT",
 }
+
+export enum GroupBySelect {
+  "none" = "none",
+  "state" = "state",
+  "stage" = "stage",
+}

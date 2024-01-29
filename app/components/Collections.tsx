@@ -1,6 +1,6 @@
 "use client";
 import { ChangeEvent, useMemo, useState } from "react";
-import { CollectionData, Stage, State } from "@/app/types";
+import { CollectionData, GroupBySelect, Stage, State } from "@/app/types";
 
 import Collection from "./Collection";
 import SelectsFilter from "./filters/SelectsFilter";
@@ -17,6 +17,7 @@ export default function Collections({
   const [selects, setSelects] = useState({
     state: "all" as State | "all",
     stage: "all" as Stage | "all",
+    groupBy: "none" as GroupBySelect,
   });
 
   const [parentHubNamePortfolio, setParentHubNamePortfolio] = useState(true);

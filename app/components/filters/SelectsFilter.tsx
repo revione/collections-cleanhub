@@ -7,7 +7,7 @@ import {
   Box,
   SelectChangeEvent,
 } from "@mui/material";
-import { State, Stage } from "@/app/types";
+import { State, Stage, GroupBySelect } from "@/app/types";
 
 const SelectsFilter = ({
   selects,
@@ -16,11 +16,13 @@ const SelectsFilter = ({
   selects: {
     state: "all" | State;
     stage: "all" | Stage;
+    groupBy: GroupBySelect;
   };
   setSelects: Dispatch<
     SetStateAction<{
       state: "all" | State;
       stage: "all" | Stage;
+      groupBy: GroupBySelect;
     }>
   >;
 }) => {
@@ -32,10 +34,16 @@ const SelectsFilter = ({
   };
 
   const handleStageChange = (event: SelectChangeEvent<Stage | "all">) => {
-    console.log({ event });
     setSelects((lastState) => ({
       ...lastState,
       [event.target.name]: event.target.value as Stage,
+    }));
+  };
+
+  const handleGroupByChange = (event: SelectChangeEvent<GroupBySelect>) => {
+    setSelects((lastState) => ({
+      ...lastState,
+      [event.target.name]: event.target.value as GroupBySelect,
     }));
   };
 
@@ -77,6 +85,25 @@ const SelectsFilter = ({
           {Object.values(Stage).map((stage) => (
             <MenuItem key={stage} value={stage}>
               {stage}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <FormControl>
+        <InputLabel htmlFor="group-by-select">Group by</InputLabel>
+        <Select
+          value={selects.groupBy}
+          onChange={handleGroupByChange}
+          label="Group by"
+          name="groupBy"
+          inputProps={{
+            id: "group-by-select",
+          }}
+        >
+          {Object.values(GroupBySelect).map((item) => (
+            <MenuItem key={item} value={item}>
+              {item}
             </MenuItem>
           ))}
         </Select>
