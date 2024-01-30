@@ -1,5 +1,7 @@
 "use client";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { debounce } from "lodash";
+
 import { CollectionData, GroupBySelect, Stage, State } from "@/app/types";
 
 import Collection from "./Collection";
@@ -7,31 +9,48 @@ import SelectsFilter from "./filters/SelectsFilter";
 import BooleanFilter from "./filters/BooleanFilter";
 import SearchFilters from "./filters/SerchFilter";
 
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
 
 export default function Collections({
   collections,
 }: {
   collections: CollectionData[];
 }) {
-  const [selects, setSelects] = useState({
-    state: "all" as State | "all",
-    stage: "all" as Stage | "all",
-    groupBy: "none" as GroupBySelect,
-  });
+  const defaultSelects = useMemo(
+    () => ({
+      state: "all" as State | "all",
+      stage: "all" as Stage | "all",
+      groupBy: "none" as GroupBySelect,
+    }),
+    []
+  );
+
+  const [selects, setSelects] = useState(defaultSelects);
 
   const [parentHubNamePortfolio, setParentHubNamePortfolio] = useState(true);
   const [searchText, setSearchText] = useState("");
+  const [searchTextDebounced, setSearchTextDebounced] = useState("");
   const [groupsCollections, setGroups] = useState<
     Record<string, CollectionData[]>
   >({});
 
+  const resetFilters = () => {
+    setSelects(defaultSelects);
+    setParentHubNamePortfolio(true);
+    setSearchText("");
+  };
+
+  const debouncedSearch = debounce((value: string) => {
+    setSearchTextDebounced(value);
+  }, 500);
+
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
+    debouncedSearch(event.target.value);
   };
 
   const filteredCollections = useMemo(() => {
-    const lowerSearchText = searchText.toLowerCase();
+    const lowerSearchText = searchTextDebounced.toLowerCase();
 
     return collections.filter((collection) => {
       const stateMatches =
@@ -42,7 +61,7 @@ export default function Collections({
         ? collection.parentHubName === "Portfolio"
         : collection.parentHubName !== "Portfolio";
       const stringMatches =
-        (searchText.length > 0 &&
+        (searchTextDebounced.length > 0 &&
           collection.name.toLowerCase().includes(lowerSearchText)) ||
         collection.collectionAndSortingParagraph
           ?.toLowerCase()
@@ -51,7 +70,7 @@ export default function Collections({
 
       return stateMatches && stageMatches && portfolioMatches && stringMatches;
     });
-  }, [collections, parentHubNamePortfolio, selects, searchText]);
+  }, [collections, parentHubNamePortfolio, selects, searchTextDebounced]);
 
   useEffect(() => {
     const groupBy = selects.groupBy;
@@ -93,6 +112,9 @@ export default function Collections({
           searchText={searchText}
           handleSearchChange={handleSearchChange}
         />
+        <Button onClick={resetFilters} variant="outlined" color="primary">
+          Reset Filters
+        </Button>
       </Box>
 
       {selects.groupBy !== "none" ? (
