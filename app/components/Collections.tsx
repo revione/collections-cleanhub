@@ -16,11 +16,14 @@ export default function Collections({
 }: {
   collections: CollectionData[];
 }) {
-  const defaultSelects = {
-    state: "all" as State | "all",
-    stage: "all" as Stage | "all",
-    groupBy: "none" as GroupBySelect,
-  };
+  const defaultSelects = useMemo(
+    () => ({
+      state: "all" as State | "all",
+      stage: "all" as Stage | "all",
+      groupBy: "none" as GroupBySelect,
+    }),
+    []
+  );
 
   const [selects, setSelects] = useState(defaultSelects);
 
@@ -109,7 +112,9 @@ export default function Collections({
           searchText={searchText}
           handleSearchChange={handleSearchChange}
         />
-        <Button onClick={resetFilters}>Reset Filters</Button>
+        <Button onClick={resetFilters} variant="outlined" color="primary">
+          Reset Filters
+        </Button>
       </Box>
 
       {selects.groupBy !== "none" ? (
