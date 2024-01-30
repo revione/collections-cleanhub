@@ -7,24 +7,32 @@ import SelectsFilter from "./filters/SelectsFilter";
 import BooleanFilter from "./filters/BooleanFilter";
 import SearchFilters from "./filters/SerchFilter";
 
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
 
 export default function Collections({
   collections,
 }: {
   collections: CollectionData[];
 }) {
-  const [selects, setSelects] = useState({
+  const defaultSelects = {
     state: "all" as State | "all",
     stage: "all" as Stage | "all",
     groupBy: "none" as GroupBySelect,
-  });
+  };
+
+  const [selects, setSelects] = useState(defaultSelects);
 
   const [parentHubNamePortfolio, setParentHubNamePortfolio] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [groupsCollections, setGroups] = useState<
     Record<string, CollectionData[]>
   >({});
+
+  const resetFilters = () => {
+    setSelects(defaultSelects);
+    setParentHubNamePortfolio(true);
+    setSearchText("");
+  };
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
@@ -93,6 +101,7 @@ export default function Collections({
           searchText={searchText}
           handleSearchChange={handleSearchChange}
         />
+        <Button onClick={resetFilters}>Reset Filters</Button>
       </Box>
 
       {selects.groupBy !== "none" ? (
