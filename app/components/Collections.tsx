@@ -1,5 +1,7 @@
 "use client";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { debounce } from "lodash";
+
 import { CollectionData, GroupBySelect, Stage, State } from "@/app/types";
 
 import Collection from "./Collection";
@@ -24,6 +26,7 @@ export default function Collections({
 
   const [parentHubNamePortfolio, setParentHubNamePortfolio] = useState(true);
   const [searchText, setSearchText] = useState("");
+  const [searchTextDebounced, setSearchTextDebounced] = useState("");
   const [groupsCollections, setGroups] = useState<
     Record<string, CollectionData[]>
   >({});
@@ -34,12 +37,17 @@ export default function Collections({
     setSearchText("");
   };
 
+  const debouncedSearch = debounce((value: string) => {
+    setSearchTextDebounced(value);
+  }, 500);
+
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
+    debouncedSearch(event.target.value);
   };
 
   const filteredCollections = useMemo(() => {
-    const lowerSearchText = searchText.toLowerCase();
+    const lowerSearchText = searchTextDebounced.toLowerCase();
 
     return collections.filter((collection) => {
       const stateMatches =
@@ -50,7 +58,7 @@ export default function Collections({
         ? collection.parentHubName === "Portfolio"
         : collection.parentHubName !== "Portfolio";
       const stringMatches =
-        (searchText.length > 0 &&
+        (searchTextDebounced.length > 0 &&
           collection.name.toLowerCase().includes(lowerSearchText)) ||
         collection.collectionAndSortingParagraph
           ?.toLowerCase()
@@ -59,7 +67,7 @@ export default function Collections({
 
       return stateMatches && stageMatches && portfolioMatches && stringMatches;
     });
-  }, [collections, parentHubNamePortfolio, selects, searchText]);
+  }, [collections, parentHubNamePortfolio, selects, searchTextDebounced]);
 
   useEffect(() => {
     const groupBy = selects.groupBy;
