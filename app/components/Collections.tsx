@@ -59,11 +59,10 @@ export default function Collections({
         : collection.parentHubName !== "Portfolio";
       const stringMatches =
         (searchTextDebounced.length > 0 &&
-          collection.name.toLowerCase().includes(lowerSearchText)) ||
-        collection.collectionAndSortingParagraph
-          ?.toLowerCase()
-          .includes(lowerSearchText) ||
-        collection.cardDescription?.toLowerCase().includes(lowerSearchText);
+          `${collection.name} ${collection.collectionAndSortingParagraph} ${collection.cardDescription}`
+            .toLowerCase()
+            .includes(lowerSearchText)) ||
+        searchTextDebounced.length === 0;
 
       return stateMatches && stageMatches && portfolioMatches && stringMatches;
     });
