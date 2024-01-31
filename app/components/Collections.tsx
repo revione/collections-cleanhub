@@ -30,9 +30,6 @@ export default function Collections({
   const [parentHubNamePortfolio, setParentHubNamePortfolio] = useState(true);
   const [searchText, setSearchText] = useState("");
   const [searchTextDebounced, setSearchTextDebounced] = useState("");
-  const [groupsCollections, setGroups] = useState<
-    Record<string, CollectionData[]>
-  >({});
 
   const resetFilters = () => {
     setSelects(defaultSelects);
@@ -49,10 +46,10 @@ export default function Collections({
     debouncedSearch(event.target.value);
   };
 
-  const filteredCollections = useMemo(() => {
+  const [filteredCollections, groupsCollections] = useMemo(() => {
     const lowerSearchText = searchTextDebounced.toLowerCase();
 
-    return collections.filter((collection) => {
+    const filteredCollections = collections.filter((collection) => {
       const stateMatches =
         selects.state === "all" || collection.state === selects.state;
       const stageMatches =
@@ -70,28 +67,27 @@ export default function Collections({
 
       return stateMatches && stageMatches && portfolioMatches && stringMatches;
     });
-  }, [collections, parentHubNamePortfolio, selects, searchTextDebounced]);
 
-  useEffect(() => {
     const groupBy = selects.groupBy;
 
-    if (groupBy !== "none") {
-      const collectionGroups = filteredCollections.reduce(
-        (acc, collection) => {
-          const key =
-            groupBy === GroupBySelect.state
-              ? collection.state
-              : collection.stage;
-          if (!acc[key]) acc[key] = [];
-          acc[key].push(collection);
-          return acc;
-        },
-        {} as Record<string, CollectionData[]>
-      );
+    const groupsCollections =
+      groupBy !== "none"
+        ? filteredCollections.reduce(
+            (acc, collection) => {
+              const key =
+                groupBy === GroupBySelect.state
+                  ? collection.state
+                  : collection.stage;
+              if (!acc[key]) acc[key] = [];
+              acc[key].push(collection);
+              return acc;
+            },
+            {} as Record<string, CollectionData[]>
+          )
+        : {};
 
-      setGroups(collectionGroups);
-    }
-  }, [filteredCollections, selects.groupBy]);
+    return [filteredCollections, groupsCollections];
+  }, [collections, parentHubNamePortfolio, selects, searchTextDebounced]);
 
   return (
     <Container sx={{ marginY: "1rem" }}>
